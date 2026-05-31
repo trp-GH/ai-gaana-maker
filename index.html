@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Gaana Maker</title>
+  <meta name="description" content="Turn your lyrics into AI-generated songs in any genre — Bollywood, Pop, Rock, EDM and more." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <div class="bg-orb bg-orb--purple" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--pink" aria-hidden="true"></div>
+
+  <div class="app-wrapper">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="header-logo">
+        <div class="logo-icon" aria-hidden="true">🎵</div>
+        <span class="logo-text">AI Gaana Maker</span>
+      </div>
+      <nav class="header-nav" role="navigation" aria-label="Main navigation">
+        <button class="nav-btn active" data-tab="create" onclick="switchTab('create')">Create</button>
+        <button class="nav-btn" data-tab="library" onclick="switchTab('library')">Library</button>
+        <button class="nav-btn" data-tab="about" onclick="switchTab('about')">About</button>
+      </nav>
+      <div class="credits-pill" id="creditsPill">
+        <span>✦</span>
+        <span id="creditsText">5 Credits</span>
+      </div>
+    </header>
+
+    <!-- CREATE TAB -->
+    <main id="tab-create" class="tab-content active">
+
+      <section class="hero">
+        <h1 class="hero-title">Turn Your Lyrics Into<br/><span class="gradient-text">AI-Generated Songs</span></h1>
+        <p class="hero-sub">Write your lyrics, pick a genre, and let AI craft your full song concept — mood, tempo, instruments and a hook line.</p>
+      </section>
+
+      <div class="studio-card">
+
+        <div class="field-group">
+          <label class="field-label" for="lyricsInput">Your Lyrics</label>
+          <div class="textarea-wrap">
+            <textarea id="lyricsInput" class="lyrics-input"
+              placeholder="Write your lyrics here... Hindi, English, or both. The more you write, the better the AI understands your vibe."
+              rows="6" oninput="updateCharCount()"></textarea>
+            <span class="char-counter" id="charCounter">0 characters</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Select Genre</label>
+          <div class="genre-grid" id="genreGrid"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Song Mood <span class="field-optional">(optional)</span></label>
+          <div class="mood-row" id="moodRow"></div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="generateSong()">
+          <span id="btnContent">
+            <span>🚀</span> Generate Song
+          </span>
+        </button>
+
+        <div class="status-bar hidden" id="statusBar">
+          <div class="pulse-dot"></div>
+          <span id="statusText">Generating your song...</span>
+        </div>
+
+      </div>
+
+      <!-- RESULTS -->
+      <section class="results-section">
+        <div class="results-header">
+          <h2 class="results-title">Generated Songs <span class="badge" id="songsCountBadge">0</span></h2>
+          <button class="text-btn" onclick="clearSongs()" id="clearBtn" style="display:none">Clear All</button>
+        </div>
+        <div id="songsGrid">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🎧</div>
+            <p class="empty-title">No songs yet</p>
+            <p class="empty-sub">Write some lyrics above and hit Generate!</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- LIBRARY TAB -->
+    <main id="tab-library" class="tab-content hidden">
+      <div class="page-header">
+        <h2>My Song Library</h2>
+        <p class="page-sub">All your generated songs saved locally in this browser.</p>
+      </div>
+      <div id="libraryGrid" class="library-grid"></div>
+    </main>
+
+    <!-- ABOUT TAB -->
+    <main id="tab-about" class="tab-content hidden">
+      <div class="about-card">
+        <div class="about-logo">🎵</div>
+        <h2>AI Gaana Maker</h2>
+        <p class="about-desc">An AI-powered music concept generator that turns your raw lyrics into a full song structure — title, mood, tempo, instruments, and a memorable hook.</p>
+        <div class="feature-list">
+          <div class="feature-item">
+            <span>🤖</span>
+            <div><strong>Powered by Claude AI</strong><p>Uses Anthropic's Claude to understand your lyrics and craft song concepts tailored to your genre.</p></div>
+          </div>
+          <div class="feature-item">
+            <span>🎼</span>
+            <div><strong>14 Genres</strong><p>From Bollywood to Techno — AI adapts the entire concept to match your chosen genre's style.</p></div>
+          </div>
+          <div class="feature-item">
+            <span>💾</span>
+            <div><strong>Saved Locally</strong><p>All songs are saved in your browser. No account needed, no data stored on any server.</p></div>
+          </div>
+          <div class="feature-item">
+            <span>🎧</span>
+            <div><strong>Audio Preview</strong><p>Each song includes a sample audio track so you can feel the vibe of your composition.</p></div>
+          </div>
+        </div>
+        <p class="about-version">v1.0.0 · Built with Anthropic Claude API</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>Made with ❤️ using <a href="https://anthropic.com" target="_blank" rel="noopener">Claude AI</a> · AI Gaana Maker v1.0</p>
+    </footer>
+  </div>
+
+  <!-- Song Detail Modal -->
+  <div class="modal-overlay hidden" id="modalOverlay" onclick="handleModalClick(event)">
+    <div class="modal-card" id="modalCard">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- JS Modules (order matters) -->
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
